@@ -3,7 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/CordovaLib/CordovaLib.iml" filepath="$PROJECT_DIR$/CordovaLib/CordovaLib.iml" />
-      <module fileurl="file://$PROJECT_DIR$/HybridAndroidApp.iml" filepath="$PROJECT_DIR$/HybridAndroidApp.iml" />
+      <module fileurl="file://$PROJECT_DIR$/HybridAnroidApp.iml" filepath="$PROJECT_DIR$/HybridAnroidApp.iml" />
     </modules>
   </component>
 </project>

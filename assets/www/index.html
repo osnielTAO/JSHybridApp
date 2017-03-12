@@ -1,58 +1,124 @@
 <!DOCTYPE html>
-<!--
-    Licensed to the Apache Software Foundation (ASF) under one
-    or more contributor license agreements.  See the NOTICE file
-    distributed with this work for additional information
-    regarding copyright ownership.  The ASF licenses this file
-    to you under the Apache License, Version 2.0 (the
-    "License"); you may not use this file except in compliance
-    with the License.  You may obtain a copy of the License at
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Security-Policy" content="default-src 'unsafe-inline' 'self' data: gap: https://ssl.gstatic.com 'unsafe-eval'; style-src 'self' 'unsafe-inline'; media-src *">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="msapplication-tap-highlight" content="no">
+    <meta name='viewport' content='initial-scale = 1, minimum-scale = 1, maximum-scale = 1'/>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="x-ua-compatible" content="IE=10">
+<title>Hello World</title>
+<style type="text/css">#initialLoading{background:url(loader.gif) no-repeat center center;background-color:#ffffff;position:absolute;margin:auto;top:0;left:0;right:0;bottom:0;z-index:10010;}</style>
+    <script type="text/javascript" src="cordova.js"></script>
+<script>
+var deviceReady = false;
+var initCalled = false ;
+var initialized = false;
 
-    http://www.apache.org/licenses/LICENSE-2.0
+function onBodyLoad()
+{
+	if(typeof window.device === 'undefined')
+	{
+		document.addEventListener("deviceready", onDeviceReady, false);
+	}
+	else
+	{
+		onDeviceReady();
+	}
+}
 
-    Unless required by applicable law or agreed to in writing,
-    software distributed under the License is distributed on an
-    "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
-     KIND, either express or implied.  See the License for the
-    specific language governing permissions and limitations
-    under the License.
--->
-<html>
-    <head>
-        <!--
-        Customize this policy to fit your own app's needs. For more guidance, see:
-            https://github.com/apache/cordova-plugin-whitelist/blob/master/README.md#content-security-policy
-        Some notes:
-            * gap: is required only on iOS (when using UIWebView) and is needed for JS->native communication
-            * https://ssl.gstatic.com is required only on Android and is needed for TalkBack to function properly
-            * Disables use of inline scripts in order to mitigate risk of XSS vulnerabilities. To change this:
-                * Enable inline JS: add 'unsafe-inline' to default-src
-        -->
-        <meta http-equiv="Content-Security-Policy" content="default-src 'self' data: gap: https://ssl.gstatic.com 'unsafe-eval'; style-src 'self' 'unsafe-inline'; media-src *">
-        <meta name="format-detection" content="telephone=no">
-        <meta name="msapplication-tap-highlight" content="no">
-        <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
-        <link rel="stylesheet" type="text/css" href="css/index.css">
-        <title>Hello World</title>
-    </head>
-    <body>
-        <div class="app">
-            <h1>Apache Cordova</h1>
-            <div id="deviceready" class="blink">
-                <p class="event listening">Connecting to Device</p>
-                <p class="event received">Device is Ready</p>
-            </div>
-            <input id="bookmark" type="text"/>
-            <button id="btnAdd">ADD ITEM</button>
-            <br/>
-            <button id="btnDeviceInfo">GET DEVICE INFO</button>
-            <br/>
-            <button id="btnToast">SHOW TOAST</button>
-            <br>
-            <button id="btnUrl">OPEN URL</button>
-            <br/>
-        </div>
-        <script type="text/javascript" src="cordova.js"></script>
-        <script type="text/javascript" src="js/index.js"></script>
-    </body>
+function onDeviceReady()
+{
+	deviceReady = true ;
+	if(initCalled === true)
+		initializeCP();
+}
+
+function initializeCP()
+{
+	if(initialized)
+		return;
+	initCalled = true ;
+	if(cp.pg && deviceReady === false)
+		return;
+
+	function cpInit()
+	{
+		document.body.innerHTML = " <div class='cpMainContainer' id='cpDocument' style='left: 0px; top:0px;' >	<div id='main_container' style='top:0px;position:absolute;width:100%;height:100%;'>	<div id='projectBorder' style='top:0px;left:0px;width:100%;height:100%;position:absolute;display:block'></div>	<div class='shadow' id='project_container' style='left: 0px; top:0px;width:100%;height:100%;position:absolute;overflow:hidden;' >	<div id='project' class='cp-movie' style='width:100% ;height:100%;overflow:hidden;'>		<div id='project_main' class='cp-timeline cp-main'>			<div id='div_Slide' onclick='cp.handleClick(event)' style='top:0px; width:100% ;height:100% ;position:absolute;-webkit-tap-highlight-color: rgba(0,0,0,0);'></div>			<canvas id='slide_transition_canvas'></canvas>		</div>		<div id='autoplayDiv' style='display:block;text-align:center;position:absolute;left:0px;top:0px;'>			<img id='autoplayImage' src='' style='position:absolute;display:block;vertical-align:middle;'/>			<div id='playImage' tabindex='9999' role='button' aria-label='play' onkeydown='cp.CPPlayButtonHandle(event)' onClick='cp.movie.play()' style='position:absolute;display:block;vertical-align:middle;'></div>		</div>	</div>	<div id='toc' style='left:0px;position:absolute;-webkit-tap-highlight-color: rgba(0,0,0,0);'>	</div>	<div id='playbar' style='bottom:0px; position:fixed'>	</div>	<div id='cc' style='left:0px; position:fixed;visibility:hidden;pointer-events:none;' onclick='cp.handleCCClick(event)'>		<div id='ccText' style='left:0px;float:left;position:absolute;width:100%;height:100%;'>		<p style='margin-left:8px;margin-right:8px;margin-top:2px;'>		</p>		</div>		<div id='ccClose' style='background-image:url(./htmlimages/ccClose.png);right:10px; position:absolute;cursor:pointer;width:13px;height:11px;' onclick='cp.showHideCC()'>		</div>	</div>	<div id='gestureIcon' class='gestureIcon'>	</div>	<div id='gestureHint' class='gestureHintDiv'>		<div id='gImage' class='gesturesHint'></div>	</div>	<div id='pwdv' style='display:block;text-align:center;position:absolute;width:100%;height:100%;left:0px;top:0px'></div>	<div id='exdv' style='display:block;text-align:center;position:absolute;width:100%;height:100%;left:0px;top:0px'></div>	</div>	</div></div><div id='blockUserInteraction' class='blocker' style='width:100%;height:100%;'>	<table style='width:100%;height:100%;text-align:center;vertical-align:middle' id='loading' class='loadingBackground'>		<tr style='width:100%;height:100%;text-align:center;vertical-align:middle'>			<td style='width:100%;height:100%;text-align:center;vertical-align:middle'>				<image id='preloaderImage'></image>				<div id='loadingString' class='loadingString'>Loading...</div>			</td>		</tr>	</table></div> <div id='initialLoading'></div>";
+		cp.DoCPInit();
+		var lCpExit = window["DoCPExit"];
+		window["DoCPExit"] = function()
+		{
+			if(cp.UnloadActivties)
+				cp.UnloadActivties();
+			lCpExit();
+		};
+	}
+
+	cpInit();
+	initialized = true;
+}
+
+</script>
+
+ </head>
+<body onload="onBodyLoad()">
+		<div id='initialLoading'></div>
+<script>
+		(function()
+		{
+			if(document.documentMode < 9)
+			{
+				document.body.innerHTML = "";
+				document.write("The content you are trying to view is not supported in the current Document Mode of Internet Explorer. Change the Document Mode to Internet Explorer 9 Standards and try to view the content again.<br>To change the Document Mode, press F12, click Document Mode: <current mode>, and then select Internet Explorer 9 Standards.");
+				return;
+			}
+			window.addEventListener("load",function() 
+			{
+				setTimeout(function() 
+				{					
+					var script = document.createElement('script');
+					script.type = 'text/javascript';
+					script.src = 'js/CPXHRLoader.js';
+					script.defer = 'defer';
+					script.onload = function()
+					{
+						var lCSSLoaded = false;
+						var lJSLoaded = false;
+						function constructDIVs()
+						{
+							if(lCSSLoaded && lJSLoaded)
+							{
+								initializeCP();
+							}
+						}
+						cpXHRJSLoader.css('css/CPLibraryAll.css',function() {
+							lCSSLoaded = true;
+							constructDIVs();
+						});
+						var lJSFiles = [  'js/jquery-1.11.3.min.js','js/CPM.js','js/playbarScript.js' ];
+						cpXHRJSLoader.js(lJSFiles,function()
+						{
+							//console.log("js loaded");
+
+							var imagesJSONFiles = [ 'imgmd.json' ];
+							cpXHRJSLoader.loadImagesJSON(imagesJSONFiles,function(imageToJSONPathMap){
+								cp.imageToJSONPathMap = imageToJSONPathMap;
+								var imageJSONFiles = [ 'img1.json' ];
+								if(window.location.protocol.substr(0,4) == "file")
+									cpXHRJSLoader.preloadURLs(imageJSONFiles, constructDIVs);
+								lJSLoaded = true;
+								if(window.location.protocol.substr(0,4) != "file" || !imageJSONFiles.length)
+									constructDIVs();
+							});
+						});
+					}
+					document.getElementsByTagName('head')[0].appendChild(script);
+				},1);
+			},false);
+		})();
+		
+</script>
+<noscript style="text-align:center;font-size:24px;">Enable Javascript support in the browser.</noscript>
+</body>
 </html>
